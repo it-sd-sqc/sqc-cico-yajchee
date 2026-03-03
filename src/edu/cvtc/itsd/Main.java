@@ -240,8 +240,10 @@ public class Main {
 
   // Return to the main panel /////////////////////////////////////////////////
   private static void doneProcessing() {
-    timeout.cancel();
-    timeout = null;
+    if (timeout != null) {
+      timeout.cancel();
+      timeout = null;
+    }
     fieldNumber.setText("");
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
@@ -327,6 +329,11 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
+
+    JButton buttonNextCustomer = new JButton("Next Customer");
+    buttonNextCustomer.addActionListener(handler);
+    buttonNextCustomer.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    panelStatus.add(buttonNextCustomer);
 
     panelStatus.add(Box.createVerticalGlue());
 
