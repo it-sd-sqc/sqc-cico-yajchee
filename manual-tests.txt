@@ -61,33 +61,34 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
-# Module 4: Ticket 401 - Prevent non-numerical card input
+# Module 4: Only allow numerical input.
+
+##  Test steps
+1. Build and run CiCo.
+2. Type 1a2b3c4d into the card field
+
+## Expected results
+The card field should display 1234, ignoring non-numerical input.
+
+# Module 5: Exit application when window closed.
 
 ## Test steps
 1. Build and run CiCo.
-2. Click the card number field.
-3. Type abcd into the card number field.
-4. Type 12ab34 into the card number field.
-5. Paste 99-88 into the card number field.
+2. Close the application window.
 
 ## Expected results
-* The field should ignore non-numerical input.
-* After step 3, the field should remain blank (no letters appear).
-* After step 4, the field should display 1234.
-* After step 5, the field should display 9988.
+The application should terminate.
 
-# Module 5: Ticket 501 - Next Customer Button
+# Module 5: Testomg CiCo takes longer than it should. Ticket 601
 
 ## Test steps
-1. Build and run CiCo.
-2. Enter 00000000 into the field and click Update.
-3. Click "Next Customer" button immediately.
-4. Enter 00000000 into the field and click Update.
-5. Do not click the "Next Customer" button and wait 11 seconds.
 
-## Expected results
-* The status panel should appear after step 2.
-* The main panel should appear immediately after step 3.
-* The status panel should appear after step 4.
-* The main panel should appear automatically after step 5.
+1. Start the CiCo application.
+2. Enter a full card number into the card input field.
+3. After the final digit is entered, the system should automatically submit.
+4. Verify the correct check-in/check-out behavior occurs.
+5. Verify pressing Enter is no longer required.
 
+Expected Result
+After the final digit of the card number is entered, the system automatically processes the card without requiring the user to press Enter or click a button. 
+The application should perform the normal check-in or check-out operation.
