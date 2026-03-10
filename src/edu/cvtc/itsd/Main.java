@@ -37,28 +37,67 @@ public class Main {
   private static class InputFilter extends DocumentFilter {
     private static final int MAX_LENGTH = 8;
 
+    private static boolean isAllDigits(String s) {
+      return s != null && s.matches("\\d+");
+    }
+
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
+      if (stringToAdd == null || stringToAdd.isEmpty()) return;
+
+      Document doc = fb.getDocument();
+      if (doc == null) {
         Toolkit.getDefaultToolkit().beep();
+        return;
       }
+
+      // Ticket 401: ignore non-numerical input
+      if (!isAllDigits(stringToAdd)) {
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      // Keep max length 8
+      if (doc.getLength() + stringToAdd.length() > MAX_LENGTH) {
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      super.insertString(fb, offset, stringToAdd, attr);
     }
 
     @Override
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
+      Document doc = fb.getDocument();
+      if (doc == null) {
         Toolkit.getDefaultToolkit().beep();
+        return;
       }
+
+      // Allow delete/backspace (replace can be called with empty/null)
+      if (stringToAdd == null || stringToAdd.isEmpty()) {
+        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+        return;
+      }
+
+      // Ticket 401: ignore non-numerical input
+      if (!isAllDigits(stringToAdd)) {
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      // Keep max length 8
+      int newLen = doc.getLength() - lengthToDelete + stringToAdd.length();
+      if (newLen > MAX_LENGTH) {
+        Toolkit.getDefaultToolkit().beep();
+        return;
+      }
+
+      super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
     }
   }
 
@@ -201,8 +240,10 @@ public class Main {
 
   // Return to the main panel /////////////////////////////////////////////////
   private static void doneProcessing() {
-    timeout.cancel();
-    timeout = null;
+    if (timeout != null) {
+      timeout.cancel();
+      timeout = null;
+    }
     fieldNumber.setText("");
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
@@ -288,6 +329,11 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
+
+    JButton buttonNextCustomer = new JButton("Next Customer");
+    buttonNextCustomer.addActionListener(handler);
+    buttonNextCustomer.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    panelStatus.add(buttonNextCustomer);
 
     panelStatus.add(Box.createVerticalGlue());
 
