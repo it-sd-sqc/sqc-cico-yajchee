@@ -61,4 +61,11 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+# Module 6: Ticket 601
+1. Build and run Cico.
+2. Enter 00000000 into the field
+3. wait to return to text field page
+4. Enter 99999999 in the field
 
+## Expected results
+* Should display the successful id match and failed id match screens at steps 2 and 4 respectively without the need to click an update button.
