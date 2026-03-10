@@ -61,4 +61,34 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+# Module 4: Only allow numerical input.
 
+##  Test steps
+1. Build and run CiCo.
+2. Type 1a2b3c4d into the card field
+
+## Expected results
+The card field should display 1234, ignoring non-numerical input.
+
+# Module 5: Exit application when window closed.
+
+## Test steps
+1. Build and run CiCo.
+2. Close the application window.
+
+## Expected results
+The application should terminate.
+
+# Module 5: Testomg CiCo takes longer than it should. Ticket 601
+
+## Test steps
+
+1. Start the CiCo application.
+2. Enter a full card number into the card input field.
+3. After the final digit is entered, the system should automatically submit.
+4. Verify the correct check-in/check-out behavior occurs.
+5. Verify pressing Enter is no longer required.
+
+Expected Result
+After the final digit of the card number is entered, the system automatically processes the card without requiring the user to press Enter or click a button. 
+The application should perform the normal check-in or check-out operation.
